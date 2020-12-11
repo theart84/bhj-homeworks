@@ -1,12 +1,11 @@
 const dropdownBtns = [...document.querySelectorAll('.dropdown__value')];
 const dropdownLists = [...document.querySelectorAll('.dropdown__list')];
 
-//Events
+// Events
 dropdownBtns.forEach((el, index) => el.addEventListener('click', () => dropdownActive(index)));
 dropdownLists.forEach((el, index) => el.addEventListener('click', (e) => selectItem(e, index)));
 
-
-//Handlers
+// Handlers
 function dropdownActive(index) {
   dropdownLists[index].classList.toggle('dropdown__list_active');
 }

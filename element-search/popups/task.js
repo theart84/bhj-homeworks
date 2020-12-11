@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   modalMainEl.classList.add('modal_active');
 
-//Events
+  // Events
   modalCloseElements.forEach((el) => {
-    el.addEventListener('click', closeModalWindow)
+    el.addEventListener('click', closeModalWindow);
   });
-  showSuccessBtn.addEventListener('click', showSuccessModal)
+  showSuccessBtn.addEventListener('click', showSuccessModal);
 
-//Handlers
+  // Handlers
   function closeModalWindow(e) {
     const modalWindow = e.target.closest('.modal');
     modalWindow.classList.remove('modal_active');

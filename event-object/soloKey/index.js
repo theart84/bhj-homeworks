@@ -33,7 +33,7 @@ class SoloOnKeyboard {
             <span class="symbol">r</span>
             <span class="symbol">t</span>
         </div>
-    `
+    `;
   }
 
   reset() {
@@ -45,17 +45,24 @@ class SoloOnKeyboard {
 
   registerEvents() {
     document.addEventListener('keyup', (e) => {
-      const currentSymbol = (this.currentSymbol.textContent);
+      const currentSymbol = this.currentSymbol.textContent;
       const inputSymbol = e.key;
-      if (inputSymbol.charCodeAt() === 65 || inputSymbol.charCodeAt() === 83 || inputSymbol.charCodeAt() === 67) {
+      if (
+        inputSymbol.charCodeAt() === 65
+        || inputSymbol.charCodeAt() === 83
+        || inputSymbol.charCodeAt() === 67
+      ) {
         return;
       }
+      // eslint-disable-next-line no-unused-expressions
       inputSymbol === currentSymbol ? this.success() : this.fail();
     });
   }
 
   startTimer() {
-    this.timerElement.textContent = `${[...this.container.querySelectorAll('.symbol')].length}s.`;
+    this.timerElement.textContent = `${
+      [...this.container.querySelectorAll('.symbol')].length
+    }s.`;
     this.timerID = setInterval(this.timer.bind(this), 1000);
   }
 
@@ -65,7 +72,7 @@ class SoloOnKeyboard {
   }
 
   timer() {
-    let count = parseInt(this.timerElement.textContent);
+    let count = parseInt(this.timerElement.textContent, 10);
     count -= 1;
     this.timerElement.textContent = `${count}s.`;
     if (!count) {
@@ -77,10 +84,11 @@ class SoloOnKeyboard {
   success() {
     this.currentSymbol.classList.add('symbol_correct');
     this.currentSymbol = this.currentSymbol.nextElementSibling;
-    const quantityCorrectChar = document.querySelectorAll('.symbol_correct').length;
+    const quantityCorrectChar = document.querySelectorAll('.symbol_correct')
+      .length;
     const quantityChar = document.querySelectorAll('.symbol').length;
     if (quantityChar === quantityCorrectChar) {
-      this.winsElement.textContent++;
+      this.winsElement.textContent += 1;
       this.stopTimer();
       this.setWord();
     }
@@ -91,15 +99,16 @@ class SoloOnKeyboard {
   }
 
   fail() {
-    this.lossElement.textContent++;
+    this.lossElement.textContent += 1;
     if (+this.lossElement.textContent === 5) {
-      alert('Вы проиграли!')
+      alert('Вы проиграли!');
       this.reset();
     }
     this.stopTimer();
     this.setWord();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getNewWord() {
     const dictionary = [
       'react',
@@ -122,13 +131,14 @@ class SoloOnKeyboard {
   setWord() {
     const wordContainer = document.querySelector('.word');
     wordContainer.innerHTML = '';
-    let template = [...this.getNewWord()].map((char, index) => {
-      return `<span class="symbol ${index === 0 ? 'symbol_current' : ''}">${char}</span>`;
-    }).join(' ');
+    const template = [...this.getNewWord()]
+      .map((char, index) => `<span class="symbol ${index === 0 ? 'symbol_current' : ''}">${char}</span>`)
+      .join(' ');
     wordContainer.insertAdjacentHTML('afterbegin', template);
     this.currentSymbol = document.querySelector('.symbol_current');
     this.startTimer();
   }
 }
 
+// eslint-disable-next-line no-new
 new SoloOnKeyboard(document.querySelector('.container'));

@@ -20,7 +20,9 @@ class Game {
   }
 
   setTimer() {
-    this.timerElement.textContent = `${[...this.container.querySelectorAll('.symbol')].length}s.`;
+    this.timerElement.textContent = `${
+      [...this.container.querySelectorAll('.symbol')].length
+    }s.`;
     this.timerID = setInterval(this.timer.bind(this), 1000);
   }
 
@@ -30,7 +32,7 @@ class Game {
   }
 
   timer() {
-    let count = parseInt(this.timerElement.textContent);
+    let count = parseInt(this.timerElement.textContent, 10);
     count -= 1;
     this.timerElement.textContent = `${count}s.`;
     if (!count) {
@@ -41,11 +43,16 @@ class Game {
 
   registerEvents() {
     document.addEventListener('keyup', (e) => {
-      const currentSymbol = (this.currentSymbol.textContent);
+      const currentSymbol = this.currentSymbol.textContent;
       const inputSymbol = e.key;
-      if (inputSymbol.charCodeAt() === 65 || inputSymbol.charCodeAt() === 83 || inputSymbol.charCodeAt() === 67) {
+      if (
+        inputSymbol.charCodeAt() === 65
+        || inputSymbol.charCodeAt() === 83
+        || inputSymbol.charCodeAt() === 67
+      ) {
         return;
       }
+      // eslint-disable-next-line no-unused-expressions
       inputSymbol === currentSymbol ? this.success() : this.fail();
     });
   }
@@ -57,6 +64,7 @@ class Game {
       return;
     }
 
+    // eslint-disable-next-line no-plusplus
     if (++this.winsElement.textContent === 10) {
       alert('Победа!');
       this.reset();
@@ -66,6 +74,7 @@ class Game {
   }
 
   fail() {
+    // eslint-disable-next-line no-plusplus
     if (++this.lossElement.textContent === 5) {
       alert('Вы проиграли!');
       this.reset();
@@ -80,40 +89,37 @@ class Game {
     this.renderWord(word);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getWord() {
     const words = [
-        'bob',
-        'awesome',
-        'netology',
-        'hello',
-        'kitty',
-        'rock',
-        'youtube',
-        'popcorn',
-        'cinema',
-        'love',
-        'javascript',
-        'я люблю kitkat',
-        'вы убили Kenny',
-      ],
-      index = Math.floor(Math.random() * words.length);
+      'bob',
+      'awesome',
+      'netology',
+      'hello',
+      'kitty',
+      'rock',
+      'youtube',
+      'popcorn',
+      'cinema',
+      'love',
+      'javascript',
+      'я люблю kitkat',
+      'вы убили Kenny',
+    ];
+    const index = Math.floor(Math.random() * words.length);
 
     return words[index];
   }
 
   renderWord(word) {
-    const html = [...word]
-      .map(
-        (s, i) =>
-          `<span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>`
-      )
+    this.wordElement.innerHTML = [...word]
+      .map((s, i) => `<span class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`)
       .join('');
-    this.wordElement.innerHTML = html;
 
     this.currentSymbol = this.wordElement.querySelector('.symbol_current');
     this.setTimer();
   }
 }
 
-new Game(document.getElementById('game'))
-
+// eslint-disable-next-line no-new
+new Game(document.getElementById('game'));

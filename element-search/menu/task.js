@@ -1,14 +1,13 @@
 const menuLinkElements = document.querySelectorAll('.menu__link');
 
-
-//Events
+// Events
 [...menuLinkElements].forEach((el) => {
-  el.addEventListener('click', dropdownActive)
+  el.addEventListener('click', dropdownActive);
 });
 
-//Handlers
+// Handlers
 function dropdownActive(e) {
-  if  (e.target.nextElementSibling.classList.contains('menu_active')) {
+  if (e.target.nextElementSibling.classList.contains('menu_active')) {
     e.target.nextElementSibling.classList.remove('menu_active');
     e.preventDefault();
     return;

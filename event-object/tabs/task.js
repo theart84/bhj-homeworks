@@ -1,12 +1,12 @@
 const tabNavElements = [...document.querySelectorAll('.tab')];
 const tabContentElements = [...document.querySelectorAll('.tab__content')];
 
-//Events
+// Events
 tabNavElements.forEach((el, index) => el.addEventListener('click', (e) => {
   setActiveClass(e, index);
 }));
 
-//Handlers
+// Handlers
 function setActiveClass(e, index) {
   const blockContentParent = e.target.closest('.tab__navigation').nextElementSibling;
   const blockContentElements = [...blockContentParent.querySelectorAll('.tab__content')];
