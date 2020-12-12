@@ -1,5 +1,9 @@
 body {
   font-family: Arial;
+  position: relative;
+}
+.cart__hidden {
+  display: none;
 }
 .cart__products {
   display: flex;
@@ -88,4 +92,19 @@ body {
 
 .product-shadow {
   position: absolute;
+}
+
+.product__remove {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: red;
+  font-size: 30px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.product__flyImg {
+  position: absolute;
+  width: 100px;
+  object-fit: contain;
 }
