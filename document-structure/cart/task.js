@@ -1,10 +1,9 @@
 const cartWrapper = document.querySelector('.cart');
 const cartContainer = document.querySelector('.cart__products');
-const addBtns = [...document.querySelectorAll('.product__add')];
 const productsContainer = document.querySelector('.products');
 
 // Events
-document.addEventListener('DOMContentLoaded', () => loadTaskFromLocalStorage());
+document.addEventListener('DOMContentLoaded', () => loadProductsFromLocalStorage());
 productsContainer.addEventListener('click', (e) => {
   const currentElement = e.target;
   if (currentElement.classList.contains('product__quantity-control_inc')) {
@@ -13,6 +12,9 @@ productsContainer.addEventListener('click', (e) => {
   if (currentElement.classList.contains('product__quantity-control_dec')) {
     changeQuantity(currentElement, 'dec');
   }
+  if (currentElement.classList.contains('product__add')) {
+    addProductInCart(currentElement);
+  }
 });
 
 cartContainer.addEventListener('click', (e) => {
@@ -20,16 +22,9 @@ cartContainer.addEventListener('click', (e) => {
   if (!currentElement.classList.contains('product__remove')) {
     return;
   }
-  // deleteProduct(currentElement);
   delTaskFromLocalStorage(currentElement);
-  loadTaskFromLocalStorage();
+  loadProductsFromLocalStorage();
 });
-
-addBtns.forEach((btn) => btn.addEventListener('click', (e) => {
-  e.preventDefault();
-  const currentElement = e.target;
-  addProductInCart(currentElement);
-}));
 
 // Handlers
 function changeQuantity(element, action) {
@@ -54,29 +49,19 @@ function addProductInCart(element) {
   const productCount = +element
     .previousElementSibling.querySelector('.product__quantity-value')
     .textContent;
-  const findProduct = getTaskFromLocalStorage().find((product) => id === product.id);
+  const findProduct = getProductsFromLocalStorage().find((product) => id === product.id);
   if (findProduct) {
     const cartElement = document
       .querySelector(`.cart__product[data-id="${findProduct.id}"]`)
       .querySelector('.cart__product-count');
     cartElement.textContent = +cartElement.textContent + productCount;
-    const updateProduct = {
-      id: findProduct.id,
-      imgURL: findProduct.imgURL,
-      productCount: +cartElement.textContent,
-    };
     animationAddProduct(id);
-    setTaskFromLocalStorage(updateProduct);
+    setProductsFromLocalStorage(id, imgURL, +cartElement.textContent);
     return;
   }
-  const cartObject = {
-    id,
-    imgURL,
-    productCount,
-  };
-  setTaskFromLocalStorage(cartObject);
+  setProductsFromLocalStorage(id, imgURL, productCount);
   cartWrapper.classList.remove('cart__hidden');
-  const template = templateProduct(cartObject);
+  const template = templateProduct(id, imgURL, productCount);
   cartContainer.insertAdjacentHTML('beforeend', template);
   animationAddProduct(id);
 }
@@ -99,12 +84,12 @@ function animationAddProduct(id) {
       clearInterval(timerID);
       flyPic.remove();
     }
-    flyPic.style.left = `${left * 1.1}px`;
-    flyPic.style.top = `${top / 1.27}px`;
-  }, 50);
+    flyPic.style.left = `${left * 1.05}px`;
+    flyPic.style.top = `${top / 1.3}px`;
+  }, 10);
 }
 
-function templateProduct({ id, imgURL, productCount }) {
+function templateProduct(id, imgURL, productCount) {
   return `
     <div class="cart__product" data-id="${id}">
       <img class="cart__product-image" src="${imgURL}" alt="Cart picture">
@@ -115,9 +100,9 @@ function templateProduct({ id, imgURL, productCount }) {
 }
 
 // LocalStorage
-function loadTaskFromLocalStorage() {
+function loadProductsFromLocalStorage() {
   cartContainer.innerHTML = '';
-  const cart = getTaskFromLocalStorage();
+  const cart = getProductsFromLocalStorage();
   if (!cart) {
     localStorage.setItem('cart', JSON.stringify([]));
   }
@@ -125,18 +110,24 @@ function loadTaskFromLocalStorage() {
     cartWrapper.classList.add('cart__hidden');
   }
   cart.forEach((product) => {
-    const template = templateProduct(product);
+    const { id, imgURL, productCount } = product;
+    const template = templateProduct(id, imgURL, productCount);
     cartContainer.insertAdjacentHTML('beforeend', template);
     cartWrapper.classList.remove('cart__hidden');
   });
 }
 
-function getTaskFromLocalStorage() {
+function getProductsFromLocalStorage() {
   return JSON.parse(localStorage.getItem('cart'));
 }
 
-function setTaskFromLocalStorage(currentProduct) {
-  const products = getTaskFromLocalStorage();
+function setProductsFromLocalStorage(id, imgURL, productCount) {
+  const currentProduct = {
+    id,
+    imgURL,
+    productCount,
+  };
+  const products = getProductsFromLocalStorage();
   localStorage.removeItem('cart');
   const newProducts = products.filter((product) => product.id !== currentProduct.id);
   newProducts.push(currentProduct);
@@ -145,7 +136,7 @@ function setTaskFromLocalStorage(currentProduct) {
 
 function delTaskFromLocalStorage(currentProduct) {
   const { id } = currentProduct.closest('.cart__product').dataset;
-  const cart = getTaskFromLocalStorage();
+  const cart = getProductsFromLocalStorage();
   const newTasks = cart.filter((product) => product.id !== +id);
   localStorage.removeItem('cart');
   localStorage.setItem('cart', JSON.stringify(newTasks));
