@@ -137,7 +137,7 @@ function setProductsFromLocalStorage(id, imgURL, productCount) {
 function delTaskFromLocalStorage(currentProduct) {
   const { id } = currentProduct.closest('.cart__product').dataset;
   const cart = getProductsFromLocalStorage();
-  const newTasks = cart.filter((product) => product.id !== +id);
+  const newProducts = cart.filter((product) => product.id !== +id);
   localStorage.removeItem('cart');
-  localStorage.setItem('cart', JSON.stringify(newTasks));
+  localStorage.setItem('cart', JSON.stringify(newProducts));
 }
