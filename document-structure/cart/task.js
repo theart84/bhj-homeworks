@@ -76,17 +76,22 @@ function animationAddProduct(id) {
     .querySelector('img');
   const cartElementPosition = cartElement.getBoundingClientRect();
   const productElementPosition = productElement.getBoundingClientRect();
+  let posX = productElementPosition.left;
+  let posY = productElementPosition.top;
+  const stepX = (cartElementPosition.left - productElementPosition.left) / 50;
+  const stepY = (productElementPosition.top - cartElementPosition.top) / 50;
   const flyImg = `<img src="${cartElement.getAttribute('src')}" class="product__flyImg" style="left: ${productElementPosition.left}px; top: ${productElementPosition.top}px;" alt="Fly picture">`;
   document.body.insertAdjacentHTML('afterbegin', flyImg);
+  const flyPic = document.querySelector('.product__flyImg');
   const timerID = setInterval(() => {
-    const flyPic = document.querySelector('.product__flyImg');
-    const { left, top } = flyPic.getBoundingClientRect();
-    if (cartElementPosition.left < left || cartElementPosition.top > top) {
+    posX += stepX;
+    posY -= stepY;
+    if (cartElementPosition.left < posX || cartElementPosition.top > posY) {
       clearInterval(timerID);
       flyPic.remove();
     }
-    flyPic.style.left = `${left * 1.05}px`;
-    flyPic.style.top = `${top / 1.3}px`;
+    flyPic.style.left = `${posX}px`;
+    flyPic.style.top = `${posY}px`;
   }, 10);
 }
 

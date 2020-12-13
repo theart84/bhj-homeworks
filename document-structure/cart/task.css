@@ -107,4 +107,5 @@ body {
   position: absolute;
   width: 100px;
   object-fit: contain;
+  z-index: 10;
 }
