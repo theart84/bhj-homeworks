@@ -31,13 +31,14 @@ function changeQuantity(element, action) {
   const quantityValue = element
     .closest('.product__quantity-controls')
     .querySelector('.product__quantity-value');
-  if (+quantityValue.textContent < 1) {
-    return;
+  if (action === 'inc') {
+    quantityValue.textContent = +quantityValue.textContent + 1;
+  } else {
+    if (+quantityValue.textContent === 1) {
+      return;
+    }
+    quantityValue.textContent = +quantityValue.textContent - 1;
   }
-  // eslint-disable-next-line no-unused-expressions
-  action === 'inc'
-    ? quantityValue.textContent = +quantityValue.textContent + 1
-    : quantityValue.textContent = +quantityValue.textContent - 1;
 }
 
 function addProductInCart(element) {
