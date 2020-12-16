@@ -40,11 +40,14 @@ function showModalWindow() {
 
 function deleteModalWindow(currentTarget) {
   currentTarget.closest('.modal__wrapper').classList.remove('modal__active');
+  currentTarget.closest('.modal__wrapper').remove();
 }
 
 function addPoll(currency) {
   const { title, answers } = currency.data;
-  const template = answers.map((answer) => `<button class="poll__answer">${answer}</button>`).join(' ');
+  const template = answers
+    .map((answer) => `<button class="poll__answer">${answer}</button>`)
+    .join(' ');
   pollTittleContainer.textContent = title;
   pollAnswersContainer.insertAdjacentHTML('afterbegin', template);
 }
