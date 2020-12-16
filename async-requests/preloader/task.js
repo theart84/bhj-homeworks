@@ -1,7 +1,10 @@
 const currencyContainer = document.getElementById('items');
 const loaderElement = document.getElementById('loader');
 
-document.addEventListener('DOMContentLoaded', () => getRateCurrency());
+document.addEventListener('DOMContentLoaded', () => {
+  loadCurrencyFromLocalStorage();
+  getRateCurrency();
+});
 
 function getRateCurrency() {
   fetch('https://netology-slow-rest.herokuapp.com')
@@ -10,13 +13,24 @@ function getRateCurrency() {
     .catch((err) => console.log(err));
 }
 
-function addCurrency(currency) {
-  const { Valute } = currency.response;
+function loadCurrencyFromLocalStorage() {
+  const data = JSON.parse(localStorage.getItem('currency'));
+  let template = '';
+  data.forEach((element) => template += templateRateCurrency(element));
+  currencyContainer.insertAdjacentHTML('afterbegin', template);
+}
+
+function addCurrency(data) {
+  const currencyArray = [];
+  currencyContainer.innerHTML = '';
+  const { Valute } = data.response;
   loaderElement.classList.remove('loader_active');
   let template = '';
   Object.values(Valute).forEach((element) => {
     template += templateRateCurrency(element);
+    currencyArray.push({ CharCode: element.CharCode, Value: element.Value });
   });
+  localStorage.setItem('currency', JSON.stringify(currencyArray));
   currencyContainer.insertAdjacentHTML('afterbegin', template);
 }
 
