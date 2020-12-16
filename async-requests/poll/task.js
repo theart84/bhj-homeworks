@@ -22,14 +22,16 @@ function getPoll() {
 
 function showModalWindow() {
   const modal = `
-  <div class ="modal__wrapper modal__active">
-    <div class="modal__text">
-      <p>Спасибо, ваш голос засчитан!</p>
-    </div>
-    <hr>
-    <div>
-      <button class="modal__close">Закрыть</button>
-    </div>    
+  <div class="modal__wrapper modal__active">
+    <div class="modal__body">
+      <div class="modal__content">
+        <div class="modal__text">
+         <p>Спасибо, ваш голос засчитан!</p>
+        </div>
+        <hr>
+        <button class="modal__close">Закрыть</button>      
+      </div>
+    </div>  
   </div>
   `;
   pollContainer.insertAdjacentHTML('afterbegin', modal);
@@ -38,8 +40,6 @@ function showModalWindow() {
 
 function deleteModalWindow(currentTarget) {
   currentTarget.closest('.modal__wrapper').classList.remove('modal__active');
-  currentTarget.closest('.modal__wrapper').remove();
-  document.body.querySelector('.wrapper').classList.remove('wrapper__modal');
 }
 
 function addPoll(currency) {
