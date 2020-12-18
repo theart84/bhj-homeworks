@@ -35,3 +35,19 @@ body {
 .welcome_active {
   display: block;
 }
+
+.login__page {
+  display: none;
+  width: 400px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.login__page-active {
+  display: block;
+}
+
+#logout__btn {
+  background-color: red;
+}
