@@ -14,7 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  requestAuth();
+  const response = requestAuth();
+  response
+    .then((res) => requestHandler(res))
+    .catch((err) => console.log(`Error send request: ${err}`));
 });
 
 logoutBtn.addEventListener('click', () => {
@@ -51,13 +54,18 @@ function addWelcomeBlock(id) {
 }
 
 // Request
-function requestAuth() {
-  fetch('https://netology-slow-rest.herokuapp.com/auth.php', {
-    method: 'POST',
-    body: new FormData(form),
-  })
-    .then((response) => response.json())
-    .then((response) => requestHandler(response))
-    .catch((err) => console.log(err));
-  form.reset();
+async function requestAuth() {
+  try {
+    const response = await fetch(
+      'https://netology-slow-rest.herokuapp.com/auth.php',
+      {
+        method: 'POST',
+        body: new FormData(form),
+      },
+    ).then((res) => res.json());
+    form.reset();
+    return response;
+  } catch (err) {
+    return Promise.reject(err);
+  }
 }
