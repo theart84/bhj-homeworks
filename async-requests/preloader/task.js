@@ -15,6 +15,9 @@ function getRateCurrency() {
 
 function loadCurrencyFromLocalStorage() {
   const data = JSON.parse(localStorage.getItem('currency'));
+  if (!data) {
+    return;
+  }
   let template = '';
   data.forEach((element) => template += templateRateCurrency(element));
   currencyContainer.insertAdjacentHTML('afterbegin', template);
