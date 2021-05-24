@@ -14,6 +14,9 @@ function sendFile() {
     const { loaded, total } = e;
     setProgress(loaded, total);
   });
+  xhr.upload.addEventListener('load', (e) => {
+    console.log('Данные успешно отправлены!');
+  });
   xhr.send(new FormData(formElement));
 }
 
